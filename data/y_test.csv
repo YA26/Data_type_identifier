@@ -1,0 +1,11 @@
+FEATURES,Y
+NUMBRANCH,categorical
+LATITUDE,numerical
+LONGITUDE,numerical
+HBCU,categorical
+AGE,numerical
+MARITAL_STATUS,categorical
+EXPERIENCE,categorical
+DISTANCE,numerical
+weather,categorical
+HAS_DISEASE,categorical
