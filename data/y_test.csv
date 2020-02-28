@@ -7,5 +7,5 @@ AGE,numerical
 MARITAL_STATUS,categorical
 EXPERIENCE,categorical
 DISTANCE,numerical
-weather,categorical
+WEATHER,categorical
 HAS_DISEASE,categorical

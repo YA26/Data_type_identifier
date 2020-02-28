@@ -61,8 +61,8 @@ data_type_identifier_model=data_type_identifier.sigmoid_neuron(X=X_train,
 """
 """
 data_type_identifier.save_variables("./saved_variables/mappings.pickle", mappings)
-data_type_identifier.save_variables("./saved_variables/X_train.pickle", mappings)
-data_type_identifier.save_variables("./saved_variables/y_train.pickle", mappings) 
+data_type_identifier.save_variables("./saved_variables/X_train.pickle", X_train)
+data_type_identifier.save_variables("./saved_variables/y_train.pickle", y_train) 
 """
 
 """
@@ -70,19 +70,19 @@ data_type_identifier.save_variables("./saved_variables/y_train.pickle", mappings
 ################ TESTING ###################
 ############################################
 """
-# 1- Loading important variables
+# 1-Loading important variables
 mappings = data_type_identifier.load_variables("./saved_variables/mappings.pickle")
 
-# 2- Loading the model
+# 2-Loading the model
 data_type_identifier_model=load_model("./model_and_checkpoint/data_type_identifier.h5")
 
-# 3- Predictions on test set
+# 3-Predictions on test set
 X_test = pd.read_csv("./data/X_test.csv", sep=",")
 y_and_labels_test = pd.read_csv("./data/y_test.csv", sep=",")
 y_test = y_and_labels_test["Y"]
 new_test_set_predictions = data_type_identifier.predict(X_test, mappings, data_type_identifier_model)
 
-#4- Classification report
+# 4-Classification report
 report = classification_report(y_true=y_test, y_pred=new_test_set_predictions, output_dict=True)
 report = pd.DataFrame(report).transpose()
 report.to_csv("./data/report.csv")
