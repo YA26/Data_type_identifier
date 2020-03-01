@@ -22,9 +22,9 @@ class DataTypeIdentifier():
         The basic idea here is to avoid having integers being transformed into float.
         We are using a special pandas datatype (Int64Dtype) to achieve it.
         '''
-        for iterator, column in enumerate(data.columns):
+        for column in data.columns:
             try:    
-                print("- Feature {} treated".format(iterator))
+                print("- Feature *{}* treated".format(column))
                 data=data.astype({column: pd.Int64Dtype()})
             except TypeError:
                 pass     
