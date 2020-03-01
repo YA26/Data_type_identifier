@@ -27,7 +27,7 @@ class DataTypeIdentifier():
     
     def build_final_set(self, correctly_typed_data, target_variable=None):
         '''
-        Function to build traning/final set. 
+        Function to build training/final set. 
         We create our final features (is_float and unique_values) to help predict if a feature is numerical or categorical 
         We also encode our target variable
         '''
