@@ -11,6 +11,9 @@ import pandas as pd
 ############# MAIN OBJECT ##################
 ############################################
 """
+#Using LabelEncoder implied that we want to keep a certain order of modalities while we are encoding a variable. 
+#Here we have no order but the target variable only has two modalities. So there's no problem using it.
+#We could have also used OneHotEncoder instead.  
 data_type_identifier = DataTypeIdentifier(LabelEncoder)
 
 

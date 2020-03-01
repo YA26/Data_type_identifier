@@ -5,11 +5,16 @@ import pickle
 
 class DataTypeIdentifier():
         
-    def __init__(self, label_encoder):
-         self.__label_encoder = label_encoder()
+    def __init__(self, encoder=None):
+        """
+        The encoder is used to encode the target variable
+        The default value of the encoder is None because we will not always need to encode the target variable. Especially if we only want to use the "predict method"
+        """
+        if encoder is not None:
+            self.__encoder = encoder()
          
-    def get_label_encoder(self):
-        return self.__label_encoder
+    def get_encoder(self):
+        return self.__encoder
         
     def keep_initial_data_types(self, data):
         '''
@@ -27,7 +32,7 @@ class DataTypeIdentifier():
     
     def build_final_set(self, correctly_typed_data, target_variable=None):
         '''
-        Function to build training/final set. 
+        Function to build traning/final set. 
         We create our final features (is_float and unique_values) to help predict if a feature is numerical or categorical 
         We also encode our target variable
         '''
@@ -48,7 +53,7 @@ class DataTypeIdentifier():
         #Encoding our target variable
         target_variable_encoded = None
         if target_variable is not None: 
-            target_variable_encoded = pd.DataFrame(self.__label_encoder.fit_transform(target_variable))
+            target_variable_encoded = pd.DataFrame(self.__encoder.fit_transform(target_variable))
         
         #Putting our features and our target variable in one dictionary
         features_target_dict = {'new_features': new_features, 'target_variable_encoded':target_variable_encoded}
@@ -59,7 +64,7 @@ class DataTypeIdentifier():
         Returns mappings of our target variable modalities
         '''
         encoded_values  = [0,1]  
-        original_values = self.__label_encoder.inverse_transform(encoded_values)
+        original_values = self.__encoder.inverse_transform(encoded_values)
         mappings        = {encoded_values[0]: original_values[0], encoded_values[1]: original_values[1]}
         return mappings
     
