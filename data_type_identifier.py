@@ -120,9 +120,9 @@ class DataTypeIdentifier():
         '''
         Load variables with pickle.
         '''
-        loaded_variable=None
+        loaded_variable = None
         with open(path, "rb") as file:
-            loaded_variable=pickle.load(file)
+            loaded_variable = pickle.load(file)
         return loaded_variable
     
     
