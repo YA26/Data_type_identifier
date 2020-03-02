@@ -106,7 +106,7 @@ class DataTypeIdentifier():
         # 6- We label our predictions. For instance 0 represents "categorical" and 1 represents "numerical"
         labeled_predictions   = self.label_predictions(predictions, mappings)
         # 7- We finally summarize everything in a dataframe
-        final_predictions      = pd.DataFrame(labeled_predictions, columns=["Predictions"], index=data.columns)
+        final_predictions     = pd.DataFrame(labeled_predictions, columns=["Predictions"], index=data.columns)
         return final_predictions
 
     def save_variables(self, path, variable):
