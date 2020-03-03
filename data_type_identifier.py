@@ -63,9 +63,9 @@ class DataTypeIdentifier():
         '''
         Returns mappings of our target variable modalities
         '''
-        encoded_values  = [0,1]  
-        original_values = self.__encoder.inverse_transform(encoded_values)
-        mappings        = {encoded_values[0]: original_values[0], encoded_values[1]: original_values[1]}
+        original_values  = self.__encoder.classes_ 
+        encoded_values   = self.__encoder.transform(original_values)
+        mappings         = {encoded_values[0]: original_values[0], encoded_values[1]: original_values[1]}
         return mappings
     
     def sigmoid_neuron(self, X, y,path, epoch, validation_split, batch_size):
