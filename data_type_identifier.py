@@ -3,7 +3,7 @@ import tensorflow as tf
 import pandas as pd
 import pickle
 
-class DataTypeIdentifier():
+class DataTypeIdentifier(object):
         
     def __init__(self, encoder=None):
         """
