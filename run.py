@@ -4,7 +4,9 @@ from sklearn.metrics import classification_report
 from sklearn.preprocessing import LabelEncoder
 from tensorflow.keras.models import load_model
 from sklearn.utils import shuffle
-import pandas as pd
+from os.path import join
+from pandas import DataFrame, read_csv
+
 
 """
 ############################################
@@ -23,7 +25,8 @@ data_type_identifier = DataTypeIdentifier(LabelEncoder)
 ############################################
 """
 # 1-Loading data
-categorical_numerical_data = pd.read_csv(".\data\data.csv", sep=",", index_col=False) 
+
+categorical_numerical_data = read_csv(join("data","data.csv"), sep=",", index_col=False) 
 
 # 2-Separating our features from our target variable
 features        = categorical_numerical_data.iloc[:,:-1]
@@ -52,7 +55,7 @@ X_train , y_train = shuffle(X_train, y_train)
 """
 data_type_identifier_model=data_type_identifier.sigmoid_neuron(X=X_train,
                                                                y=y_train,
-                                                               path="./model_and_checkpoint/data_type_identifier.h5", 
+                                                               path=join("model_and_checkpoint","data_type_identifier.h5"), 
                                                                epoch=75, 
                                                                validation_split=0.1, 
                                                                batch_size=10)  
@@ -63,9 +66,9 @@ data_type_identifier_model=data_type_identifier.sigmoid_neuron(X=X_train,
 ############################################
 """
 """
-data_type_identifier.save_variables("./saved_variables/mappings.pickle", mappings)
-data_type_identifier.save_variables("./saved_variables/X_train.pickle", X_train)
-data_type_identifier.save_variables("./saved_variables/y_train.pickle", y_train) 
+data_type_identifier.save_variables(join("saved_variables","mappings.pickle"), mappings)
+data_type_identifier.save_variables(join("saved_variables","X_train.pickle"), X_train)
+data_type_identifier.save_variables(join("saved_variables","y_train.pickle"), y_train) 
 """
 
 """
@@ -74,19 +77,19 @@ data_type_identifier.save_variables("./saved_variables/y_train.pickle", y_train)
 ############################################
 """
 # 1-Loading important variables
-mappings = data_type_identifier.load_variables("./saved_variables/mappings.pickle")
+mappings = data_type_identifier.load_variables(join("saved_variables","mappings.pickle"))
 
 # 2-Loading the model
-data_type_identifier_model=load_model("./model_and_checkpoint/data_type_identifier.h5")
+data_type_identifier_model=load_model(join("model_and_checkpoint","data_type_identifier.h5"))
 
 # 3-Predictions on test set
-X_test = pd.read_csv("./data/X_test.csv", sep=",")
-y_and_labels_test = pd.read_csv("./data/y_test.csv", sep=",")
+X_test = read_csv(join("data","X_test.csv"), sep=",")
+y_and_labels_test = read_csv(join("data","y_test.csv"), sep=",")
 y_test = y_and_labels_test["Y"]
 new_test_set_predictions = data_type_identifier.predict(X_test, mappings, data_type_identifier_model)
 
 # 4-Classification report
 report = classification_report(y_true=y_test, y_pred=new_test_set_predictions, output_dict=True)
-report = pd.DataFrame(report).transpose()
-report.to_csv("./data/report.csv")
+report = DataFrame(report).transpose()
+report.to_csv(join("data","report.csv"))
 
