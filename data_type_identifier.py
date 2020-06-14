@@ -13,8 +13,8 @@ class DataTypeIdentifier(object):
         The default value of the encoder is None because we will not always need to encode the target variable. Especially if we only want to use the "predict method"
         """
         if encoder is not None:
-            self.__encoder = encoder()
-            self.__encoder_2 = encoder()
+            self.__encoder      = encoder()
+            self.__encoder_2    = encoder()
         
     def get_encoder(self):
         return self.__encoder
@@ -55,7 +55,7 @@ class DataTypeIdentifier(object):
                 feature_encoded=self.__encoder_2.fit_transform(feature)    
             feature_encoded = sort(list(set(feature_encoded)))
             
-            #Step for two succesive modalities
+            #Step for two successive modalities
             index=0
             step=1     
             while step == 1 and index<len(feature_encoded)-1:
@@ -71,9 +71,9 @@ class DataTypeIdentifier(object):
             unique_values = feature.nunique()
             #Summarizing everything in a list for every single feature
             new_features_list.append([is_float, unique_values, one_step])
-        new_features_list       = array(new_features_list)
+        new_features_list = array(new_features_list)
         #We scale(mean:0 and std:1) the values in order to keep the big modalities within a certain range: we don't want "unique_values" modalities to be dominant but we also want to keep the outliers.
-        new_features_list[:,1]  = scale(new_features_list[:,1])
+        new_features_list[:,1] = scale(new_features_list[:,1])
         #Dataframe depicting our new features
         new_features = pd.DataFrame(new_features_list, columns=["is_float", "unique_values", "one_step"])
         
