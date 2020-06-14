@@ -6,7 +6,7 @@ from tensorflow.keras.models import load_model
 from sklearn.utils import shuffle
 from os.path import join
 from pandas import DataFrame, read_csv
-
+from pandas import concat
 
 """
 ############################################
@@ -27,7 +27,8 @@ data_type_identifier = DataTypeIdentifier(LabelEncoder)
 # 1-Loading data
 
 categorical_numerical_data = read_csv(join("data","data.csv"), sep=",", index_col=False) 
-
+features_transposed_2 = read_csv(join("data","CC_training.csv"), sep=",", index_col=False, encoding="-ISO8859-1")
+target_variable_2 =  read_csv(join("data","y.csv"), sep=",")
 # 2-Separating our features from our target variable
 features        = categorical_numerical_data.iloc[:,:-1]
 target_variable = categorical_numerical_data.iloc[:,-1]
@@ -37,16 +38,17 @@ features_transposed = features.T
 
 # 4-Keeping the initial data type of every single feature
 features_transposed = data_type_identifier.keep_initial_data_types(features_transposed)
-
+features_transposed_2 = data_type_identifier.keep_initial_data_types(features_transposed_2)
 # 5-Building our training set
 features_and_target = data_type_identifier.build_final_set(features_transposed, target_variable)
-X_train             = features_and_target["new_features"]
-y_train             = features_and_target["target_variable_encoded"]
+features_and_target_2 = data_type_identifier.build_final_set(features_transposed_2, target_variable_2)
+
+X_train             = concat((features_and_target["new_features"], features_and_target_2["new_features"]))
+y_train             = concat((features_and_target["target_variable_encoded"],features_and_target_2["target_variable_encoded"]))
 mappings            = data_type_identifier.get_target_variable_class_mappings() # 0 for categorical and 1 for numerical when this model was built 
 
 # 6-Shuffling our data
 X_train , y_train = shuffle(X_train, y_train) 
-
 
 """
 ############################################
@@ -56,20 +58,20 @@ X_train , y_train = shuffle(X_train, y_train)
 data_type_identifier_model=data_type_identifier.sigmoid_neuron(X=X_train,
                                                                y=y_train,
                                                                path=join("model_and_checkpoint","data_type_identifier.h5"), 
-                                                               epoch=75, 
+                                                               epoch=300, 
                                                                validation_split=0.1, 
-                                                               batch_size=10)  
+                                                               batch_size=20)
 
 """
 ############################################
 ##############SAVING VARIABLES##############
 ############################################
 """
-"""
+
 data_type_identifier.save_variables(join("saved_variables","mappings.pickle"), mappings)
 data_type_identifier.save_variables(join("saved_variables","X_train.pickle"), X_train)
 data_type_identifier.save_variables(join("saved_variables","y_train.pickle"), y_train) 
-"""
+
 
 """
 ############################################
@@ -83,13 +85,13 @@ mappings = data_type_identifier.load_variables(join("saved_variables","mappings.
 data_type_identifier_model=load_model(join("model_and_checkpoint","data_type_identifier.h5"))
 
 # 3-Predictions on test set
-X_test = read_csv(join("data","X_test.csv"), sep=",")
-y_and_labels_test = read_csv(join("data","y_test.csv"), sep=",")
-y_test = y_and_labels_test["Y"]
+X_test = read_csv(join("data","CC_training.csv"), sep=",", encoding="ISO-8859-1")
+y_and_labels_test = read_csv(join("data","y.csv"), sep=",")
+y_test = y_and_labels_test
 new_test_set_predictions = data_type_identifier.predict(X_test, mappings, data_type_identifier_model)
-
 # 4-Classification report
 report = classification_report(y_true=y_test, y_pred=new_test_set_predictions, output_dict=True)
 report = DataFrame(report).transpose()
 report.to_csv(join("data","report.csv"))
+
 
