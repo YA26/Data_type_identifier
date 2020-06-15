@@ -18,7 +18,7 @@ from DataTypeIdentifier.data_type_identifier import DataTypeIdentifier
 
 data_type_identifier    = DataTypeIdentifier()
 data                    = read_csv(join("data","test_dataset.csv"), sep=",")
-data_type_predictions   = data_type_identifier.predict(data)
+predictions             = data_type_identifier.predict(data)
 ```
 
 ## Predictions:
