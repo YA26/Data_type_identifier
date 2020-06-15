@@ -21,4 +21,5 @@ data                    = read_csv(join("data","test_dataset.csv"), sep=",")
 data_type_predictions   = data_type_identifier.predict(data)
 ```
 
+## Prediction:
 ![alt_text](img_result.JPG)
