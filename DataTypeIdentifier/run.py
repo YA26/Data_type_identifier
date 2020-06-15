@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from data_type_identifier import DataTypeIdentifier
+from data_type_identifier_generator import DataTypeIdentifier
 from sklearn.metrics import classification_report
 from sklearn.preprocessing import LabelEncoder
 from tensorflow.keras.models import load_model
