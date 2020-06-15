@@ -21,3 +21,4 @@ data                    = read_csv(join("data","test_dataset.csv"), sep=",")
 data_type_predictions   = data_type_identifier.predict(data)
 ```
 
+![alt text](https://github.com/[username]/[reponame]/blob/[branch]/img_result.jpg?raw=true)
