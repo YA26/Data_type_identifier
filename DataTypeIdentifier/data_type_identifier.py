@@ -29,7 +29,7 @@ class DataTypeIdentifier(object):
                 pass     
         return data
     
-    def __build_final_set(self, original_correctly_typed_data, target_variable=None):
+    def __build_final_set(self, original_correctly_typed_data):
         '''
         Function to build training/final set. 
         We create our final features (is_float and unique_values) to help predict if a feature is numerical or categorical 
