@@ -21,6 +21,5 @@ data                    = read_csv(join("data","test_dataset.csv"), sep=",")
 predictions             = data_type_identifier.predict(data)
 ```
 
-
 ## Result:
 ![alt text](https://drive.google.com/file/d/1h1aVb0cczABq-u_ZOGu47unq2xg6Qa5r/view?usp=sharing)
