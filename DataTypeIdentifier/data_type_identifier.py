@@ -15,12 +15,13 @@ class DataTypeIdentifier(object):
     def get_encoder(self):
         return self.__encoder
         
-    def __keep_initial_data_types(self, data):
+    def __keep_initial_data_types(self, original_data):
         '''
         This function helps us render immuable the data type of every feature(column) that was set before the data was imported.
         The basic idea here is to avoid having integers being transformed into float.
         We are using a special pandas datatype (Int64Dtype) to achieve it.
         '''
+        data = original_data.copy()
         for column in data.columns:
             try:    
                 print("- Feature *{}* treated".format(column))
@@ -29,17 +30,16 @@ class DataTypeIdentifier(object):
                 pass     
         return data
     
-    def __build_final_set(self, original_correctly_typed_data):
+    def __build_final_set(self, data):
         '''
         Function to build training/final set. 
         We create our final features (is_float and unique_values) to help predict if a feature is numerical or categorical 
         We also encode our target variable
         '''
-        correctly_typed_data = original_correctly_typed_data.copy()
-        correctly_typed_data.dropna(inplace=True) 
+        data.dropna(inplace=True) 
         new_features_list = []
-        for feature_name in correctly_typed_data:
-            feature = correctly_typed_data[feature_name]
+        for feature_name in data:
+            feature = data[feature_name]
             #Checking feature data type: we create a variable "is_float" to check if the data type of the feature is float. The default value is "False" or 0
             is_float = 0 
             if feature.dtype == float:
@@ -101,15 +101,15 @@ class DataTypeIdentifier(object):
             loaded_variable = pickle.load(file)
         return loaded_variable
     
-    def predict(self, data):
+    def predict(self, original_data):
         '''
         We finally get our predictions by doing some data preprocessing first(counting unique values and checking if a feature has the data type float).
         '''
 
         # 1- We keep the initial data types
-        accurately_typed_data   = self.__keep_initial_data_types(data)
+        accurately_typed_data   = self.__keep_initial_data_types(original_data)
         # 2- We build our final_set for our model.
-        features                = self.__build_final_set(original_correctly_typed_data=accurately_typed_data)
+        features                = self.__build_final_set(accurately_typed_data)
         # 3- We get our predictions 
         model                   = load_model(join(dirname(getsourcefile(DataTypeIdentifier)), "model_and_checkpoint", "data_type_identifier.h5"))
         predictions             = model.predict_classes(features)
@@ -117,7 +117,7 @@ class DataTypeIdentifier(object):
         mappings                = self.__load_variables(join(dirname(getsourcefile(DataTypeIdentifier)), "saved_variables", "mappings.pickle"))
         labeled_predictions     = self.__label_predictions(predictions, mappings)
         # 5- We finally summarize everything in a dataframe
-        final_predictions       = pd.DataFrame(labeled_predictions, columns=["Predictions"], index=data.columns)
+        final_predictions       = pd.DataFrame(labeled_predictions, columns=["Predictions"], index=original_data.columns)
         return final_predictions
 
     
