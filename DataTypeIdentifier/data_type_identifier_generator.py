@@ -27,6 +27,7 @@ class DataTypeIdentifier(object):
         The basic idea here is to avoid having integers being transformed into float.
         We are using a special pandas datatype (Int64Dtype) to achieve it.
         '''
+        data = original_data.copy(deep=True)
         for column in data.columns:
             try:    
                 print("- Feature *{}* treated".format(column))
@@ -41,7 +42,7 @@ class DataTypeIdentifier(object):
         We create our final features (is_float and unique_values) to help predict if a feature is numerical or categorical 
         We also encode our target variable
         '''
-        correctly_typed_data = original_correctly_typed_data.copy()
+        correctly_typed_data = original_correctly_typed_data.copy(deep=True)
         correctly_typed_data.dropna(inplace=True) 
         new_features_list = []
         for feature_name in correctly_typed_data:

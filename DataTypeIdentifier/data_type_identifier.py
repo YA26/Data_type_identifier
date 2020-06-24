@@ -10,21 +10,26 @@ import pickle
 class DataTypeIdentifier(object):
         
     def __init__(self):
-        self.__encoder  = LabelEncoder()
+        self.__encoder          = LabelEncoder()
+        self.__print_verbose    = None
                      
     def get_encoder(self):
         return self.__encoder
-        
+
+    def __print(self, string):
+        if self.__print_verbose:
+            print(string) 
+    
     def __keep_initial_data_types(self, original_data):
         '''
         This function helps us render immuable the data type of every feature(column) that was set before the data was imported.
         The basic idea here is to avoid having integers being transformed into float.
         We are using a special pandas datatype (Int64Dtype) to achieve it.
         '''
-        data = original_data.copy()
+        data = original_data.copy(deep=True)
         for column in data.columns:
             try:    
-                print("- Feature *{}* treated".format(column))
+                self.__print(f"- Feature *{column}* treated")
                 data=data.astype({column: pd.Int64Dtype()})
             except TypeError:
                 pass     
@@ -101,17 +106,17 @@ class DataTypeIdentifier(object):
             loaded_variable = pickle.load(file)
         return loaded_variable
     
-    def predict(self, original_data):
+    def predict(self, original_data, verbose=1):
         '''
         We finally get our predictions by doing some data preprocessing first(counting unique values and checking if a feature has the data type float).
         '''
-
+        self.__print_verbose    = verbose
         # 1- We keep the initial data types
         accurately_typed_data   = self.__keep_initial_data_types(original_data)
         # 2- We build our final_set for our model.
         features                = self.__build_final_set(accurately_typed_data)
         # 3- We get our predictions 
-        model                   = load_model(join(dirname(getsourcefile(DataTypeIdentifier)), "model_and_checkpoint", "data_type_identifier.h5"))
+        model                   = load_model(join(dirname(getsourcefile(DataTypeIdentifier)), "data_type_identifier_model", "data_type_identifier.h5"))
         predictions             = model.predict_classes(features)
         # 4- We label our predictions. For instance 0 represents "categorical" and 1 represents "numerical"
         mappings                = self.__load_variables(join(dirname(getsourcefile(DataTypeIdentifier)), "saved_variables", "mappings.pickle"))
