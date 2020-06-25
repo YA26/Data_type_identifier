@@ -1,7 +1,7 @@
 # Predicting whether a distribution is categorical or numerical
 
 
-## Do you want to give it a try?
+## Instructions
 
 - You can get the library with ```pip install DataTypeIdentifier```
 
