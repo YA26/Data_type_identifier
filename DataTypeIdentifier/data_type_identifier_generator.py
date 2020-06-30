@@ -131,7 +131,7 @@ class DataTypeIdentifier(object):
         # 3- We get our two features: "is_float" and "unique_values" 
         features              = final_set["new_features"]
         # 4- We get our predictions 
-        predictions           = model.predict_classes(features)
+        predictions           = (model.predict(features) > 0.5).astype("int32")
         # 5- We label our predictions. For instance 0 represents "categorical" and 1 represents "numerical"
         labeled_predictions   = self.label_predictions(predictions, mappings)
         # 6- We finally summarize everything in a dataframe
