@@ -121,7 +121,7 @@ class DataTypeIdentifier(object):
         features = self.__build_final_set(accurately_typed_data)
         # 3- We get our predictions 
         path_model = join(dirname(getsourcefile(DataTypeIdentifier)), 
-                        "data_type_identifier_model", 
+                        "model_and_checkpoint", 
                         "data_type_identifier.h5")   
         model = load_model(path_model)
         predictions = (model.predict(features) > 0.5).astype("int32")
