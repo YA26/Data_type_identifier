@@ -3,7 +3,5 @@ setup.cfg
 setup.py
 DataTypeIdentifier\__init__.py
 DataTypeIdentifier\data_type_identifier.py
-DataTypeIdentifier\data_type_identifier_generator.py
-DataTypeIdentifier\run.py
 DataTypeIdentifier\model_and_checkpoint\data_type_identifier.h5
 DataTypeIdentifier\saved_variables\mappings.pickle
