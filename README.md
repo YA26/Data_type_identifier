@@ -3,7 +3,7 @@
 
 ## Instructions
 
-- You can get the library with ```pip install DataTypeIdentifier```
+- You can get the library with **```pip install DataTypeIdentifier```**
 
 - Import a dataset
 
