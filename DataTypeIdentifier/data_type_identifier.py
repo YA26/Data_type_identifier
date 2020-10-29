@@ -20,7 +20,7 @@ class DataTypeIdentifier(object):
         if self.__print_verbose:
             print(string) 
     
-    def __keep_initial_data_types(self, original_data):
+    def keep_initial_data_types(self, original_data):
         '''
         This function helps us render immuable the data type of every 
         feature(column) that was set before the data was imported.The basic 
@@ -116,7 +116,7 @@ class DataTypeIdentifier(object):
         '''
         self.__print_verbose = verbose
         # 1- We keep the initial data types
-        accurately_typed_data = self.__keep_initial_data_types(original_data)
+        accurately_typed_data = self.keep_initial_data_types(original_data)
         # 2- We build our final_set for our model.
         features = self.__build_final_set(accurately_typed_data)
         # 3- We get our predictions 
